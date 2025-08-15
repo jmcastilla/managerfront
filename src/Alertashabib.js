@@ -6,7 +6,7 @@ import DataTable from "./components/DataTable.js";
 
 // Usa la ruta relativa si tienes proxy en webpack:
 // devServer.proxy["/api/coopidrogas"] -> http://localhost:5000
-const API_URL = "http://localhost:5000/api/alertashabib";
+const API_URL = "http://146.190.75.181:5000/api/alertashabib";
 // Si NO tienes proxy, usa la URL completa (puede dar CORS en dev):
 // const API_URL = "http://localhost:5000/api/coopidrogas";
 
