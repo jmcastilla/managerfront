@@ -106,19 +106,6 @@ export default function Login() {
             )
           ),
 
-          // Acciones
-          React.createElement(
-            "div",
-            { className: "login-actions" },
-            React.createElement(
-              "label",
-              { className: "login-remember" },
-              React.createElement("input", { type: "checkbox", name: "remember" }),
-              "Remember"
-            ),
-            React.createElement("a", { className: "login-link", href: "#" }, "Forgot password?")
-          ),
-
           // Botón
           React.createElement("button", { className: "login-btn", type: "submit" }, "LOGIN")
         ),
