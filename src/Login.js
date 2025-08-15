@@ -1,4 +1,6 @@
-import React from "react";
+// src/Login.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function IconUser(props) {
   return React.createElement(
@@ -16,13 +18,44 @@ function IconLock(props) {
 }
 
 export default function Login() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrMsg("");
+    if (loading) return;
+
     const data = new FormData(e.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    // TODO: reemplazar por tu lógica real de autenticación:
-    alert(`Email: ${email}\nPassword: ${password}`);
+    const email = String(data.get("email") || "").trim();
+    const password = String(data.get("password") || "");
+
+    if (!email || !password) {
+      setErrMsg("Ingresa tu email y contraseña.");
+      return;
+    }
+
+    setLoading(true);
+    fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+      .then((r) => r.json())
+      .then((json) => {
+        if (!json?.ok) {
+          setErrMsg(json?.error || "Credenciales inválidas");
+          return;
+        }
+        // Guarda sesión
+        localStorage.setItem("token", json.token);
+        localStorage.setItem("userName", json.user?.name || email);
+        // Navega al panel principal
+        navigate("/invcoopi");
+      })
+      .catch(() => setErrMsg("No se pudo conectar con el servidor"))
+      .finally(() => setLoading(false));
   };
 
   return React.createElement(
@@ -40,15 +73,14 @@ export default function Login() {
         React.createElement(
           "p",
           null,
-          "Habib Droguerías presenta su plataforma web integral para el área de compras y logística, diseñada para centralizar, optimizar y agilizar todos los procesos de abastecimiento."+
-          "Con una interfaz intuitiva y herramientas inteligentes, podrás: ",
+          "Habib Droguerías presenta su plataforma web integral para el área de compras y logística, diseñada para centralizar, optimizar y agilizar todos los procesos de abastecimiento.",
           React.createElement("br"),
           React.createElement("br"),
-          "- Gestionar pedidos y proveedores en tiempo real. ",
+          "• Gestionar pedidos y proveedores en tiempo real.",
           React.createElement("br"),
-          "- Controlar inventarios con datos siempre actualizados. ",
+          "• Controlar inventarios con datos siempre actualizados.",
           React.createElement("br"),
-          "- Planificar compras estratégicas basadas en rotación y demanda."
+          "• Planificar compras estratégicas basadas en rotación y demanda."
         )
       ),
 
@@ -58,7 +90,6 @@ export default function Login() {
         { className: "login-right" },
         React.createElement("div", { className: "login-title" }, "USER LOGIN"),
 
-        // Form
         React.createElement(
           "form",
           { onSubmit: handleSubmit, noValidate: true },
@@ -79,7 +110,8 @@ export default function Login() {
                 type: "email",
                 placeholder: "you@example.com",
                 required: true,
-                autoComplete: "email"
+                autoComplete: "email",
+                disabled: loading
               })
             )
           ),
@@ -101,15 +133,29 @@ export default function Login() {
                 placeholder: "••••••••",
                 required: true,
                 autoComplete: "current-password",
-                minLength: 4
+                minLength: 4,
+                disabled: loading
               })
             )
           ),
 
-          // Botón
-          React.createElement("button", { className: "login-btn", type: "submit" }, "LOGIN")
-        ),
+          // Error
+          errMsg
+            ? React.createElement(
+                "div",
+                { className: "dt-error", style: { marginTop: "4px" } },
+                "⚠️ ",
+                errMsg
+              )
+            : null,
 
+          // Botón
+          React.createElement(
+            "button",
+            { className: "login-btn", type: "submit", disabled: loading },
+            loading ? "Ingresando..." : "LOGIN"
+          )
+        )
       )
     )
   );

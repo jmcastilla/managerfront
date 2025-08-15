@@ -33,7 +33,7 @@ export default function Topbar({ userName, onLogout, links }) {
     React.createElement(
       "div",
       { className: "tb-left" },
-      React.createElement(Link, { to: "/principal", className: "tb-brand" }, "HabiCompras")
+      React.createElement(Link, { to: "/invcoopi", className: "tb-brand" }, "HabiCompras")
     ),
 
     // centro: links

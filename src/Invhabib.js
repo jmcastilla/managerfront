@@ -1,34 +1,40 @@
 // src/Principal.js
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "./components/Layout.js";
 import DataTable from "./components/DataTable.js";
 
 // Usa la ruta relativa si tienes proxy en webpack:
 // devServer.proxy["/api/coopidrogas"] -> http://localhost:5000
-const API_URL = "http://localhost:5000/api/coopidrogas";
+const API_URL = "http://localhost:5000/api/inventario";
 // Si NO tienes proxy, usa la URL completa (puede dar CORS en dev):
 // const API_URL = "http://localhost:5000/api/coopidrogas";
 
-export default function Principal() {
+export default function Invcoopi() {
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const t = localStorage.getItem("token");
+    if (!t) navigate("/");
+  }, []);
+
   const links = [
-    { to: "/principal", label: "Inv Coopidrogas" },
-    { to: "/ordenes", label: "Órdenes" },
-    { to: "/proveedores", label: "Proveedores" },
-    { to: "/inventario", label: "Inventario" },
-    { to: "/reportes", label: "Reportes" },
-    { to: "/configuracion", label: "Configuración" }
+    { to: "/invcoopi", label: "Inv Coopidrogas" },
+    { to: "/clasificacion", label: "Clasificacion ABC" },
+    { to: "/invhabib", label: "Inv Bodegas" },
+    { to: "/alertashabib", label: "Alertas Bodegas" },
+    { to: "/alertascoopi", label: "Alertas Coopidrogas" },
+    { to: "/sugerido", label: "Sugerido Pedido" }
   ];
 
   const columns = [
     { key: "sku", header: "SKU" },
-    { key: "descripcion", header: "Descripción" },
-    { key: "ean", header: "EAN" },
+    { key: "nombre", header: "Descripción" },
     { key: "proveedor", header: "Proveedor" },
-    { key: "corriente", header: "Corriente" },
-    { key: "precioreal", header: "Precio Real" },
-    { key: "bonificacion", header: "Bonificación" },
-    { key: "disponible", header: "Disponible" },
-    { key: "maximo", header: "Máximo" }
+    { key: "linea", header: "Linea" },
+    { key: "bod", header: "Cod Bodega" },
+    { key: "bodega", header: "Bodega" },
+    { key: "stock", header: "Stock" }
   ];
 
   return React.createElement(
@@ -48,14 +54,19 @@ export default function Principal() {
           marginBottom: "15px"
         }
       },
-      "📦 Inventario Coopidrogas"
+      "📦 Inventario Bodegas"
     ),
 
     React.createElement(DataTable, {
       fetchUrl: API_URL,
       columns,
       pageSize: 10,
-      exportFileName: "inventario_coopidrogas.xlsx"
+      exportFileName: "inventariobodegas.xlsx",
+      fetchOptions: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+        }
+      }
     })
   );
 }
