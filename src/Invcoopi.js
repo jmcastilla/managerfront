@@ -24,7 +24,8 @@ export default function Invcoopi() {
     { to: "/invhabib", label: "Inv Bodegas" },
     { to: "/alertashabib", label: "Alertas Bodegas" },
     { to: "/alertascoopi", label: "Alertas Coopidrogas" },
-    { to: "/sugerido", label: "Sugerido Pedido" }
+    { to: "/sugerido", label: "Sugerido Pedido" },
+    { to: "/diasinventario", label: "Dias Inventario" }
   ];
 
   const columns = [

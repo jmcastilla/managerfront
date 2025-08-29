@@ -3,6 +3,7 @@ import { Link, Routes, Route } from "react-router-dom";
 import Invcoopi from "./Invcoopi.js";
 import Clasificacion from "./Clasificacion.js";
 import Invhabib from "./Invhabib.js";
+import Diasinventario from "./Diasinventario.js";
 import Alertashabib from "./Alertashabib.js";
 import Alertascoopi from "./Alertascoopi.js";
 import Sugerido from "./Sugerido.js";
@@ -22,6 +23,7 @@ export default function App() {
       React.createElement(Route, { path: "/sugerido", element: React.createElement(Sugerido) }),
       React.createElement(Route, { path: "/invhabib", element: React.createElement(Invhabib) }),
       React.createElement(Route, { path: "/clasificacion", element: React.createElement(Clasificacion) }),
+      React.createElement(Route, { path: "/diasinventario", element: React.createElement(Diasinventario) }),
       React.createElement(Route, { path: "/", element: React.createElement(Login) })
     )
   );

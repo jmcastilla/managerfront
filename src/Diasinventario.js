@@ -6,11 +6,12 @@ import DataTable from "./components/DataTable.js";
 
 // Usa la ruta relativa si tienes proxy en webpack:
 // devServer.proxy["/api/coopidrogas"] -> http://localhost:5000
-const API_URL = "http://146.190.75.181:5000/api/alertascoopidrogas";
+const API_URL = "http://146.190.75.181:5000/api/diasinventario";
 // Si NO tienes proxy, usa la URL completa (puede dar CORS en dev):
 // const API_URL = "http://localhost:5000/api/coopidrogas";
 
 export default function Invcoopi() {
+
   const navigate = useNavigate();
   useEffect(() => {
     const t = localStorage.getItem("token");
@@ -28,16 +29,15 @@ export default function Invcoopi() {
   ];
 
   const columns = [
-    { key: "idalerta", header: "ID ALERTA" },
     { key: "sku", header: "SKU" },
-    { key: "descripcion", header: "Descripción" },
-    { key: "disponible", header: "Stock" },
-    { key: "disponibleant", header: "Stock Ant" },
-    { key: "estadoinventario", header: "Estado Inv" },
-    { key: "precioreal", header: "Precio" },
-    { key: "realant", header: "Precio Ant" },
-    { key: "estadoprecio", header: "Estado Precio" },
-    { key: "fecha", header: "Reportado" }
+    { key: "nombre", header: "Descripción" },
+    { key: "proveedor", header: "Proveedor" },
+    { key: "linea", header: "Categoria" },
+    { key: "bod", header: "Cod Bodega" },
+    { key: "dias", header: "Ult Act" },
+    { key: "stock", header: "Stock" },
+    { key: "rot90", header: "Rot 90" },
+    { key: "dias_inventario", header: "Dias Inv" }
   ];
 
   return React.createElement(
@@ -57,14 +57,14 @@ export default function Invcoopi() {
           marginBottom: "15px"
         }
       },
-      "📦 Alertas Coopidrogas"
+      "📦 Inventario Bodegas"
     ),
 
     React.createElement(DataTable, {
       fetchUrl: API_URL,
       columns,
       pageSize: 10,
-      exportFileName: "alertascoopi.xlsx",
+      exportFileName: "diasinventario.xlsx",
       fetchOptions: {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token") || ""}`
